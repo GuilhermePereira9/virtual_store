@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:virtual_store/models/product.dart';
+import 'package:carousel_pro/carousel_pro.dart';
+
+class ProductScreen extends StatelessWidget {
+  const ProductScreen(this.product);
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(product.name),
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.white,
+      body: ListView(
+        children: <Widget>[
+          AspectRatio(
+            aspectRatio: 1,
+            child: Carousel(
+              images: product.images.map((url) {
+                return NetworkImage(url);
+              }).toList(),
+              dotSize: 4,
+              dotSpacing: 15,
+              dotBgColor: Colors.transparent,
+              dotColor: Theme.of(context).primaryColor,
+              autoplay: false,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    'A partir de',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+                Text(
+                  'R\$ 249.90',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  child: Text(
+                    'Descrição',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Text(
+                  product.description,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
