@@ -22,15 +22,6 @@ class BaseScreen extends StatelessWidget {
             ),
           ),
           ProductsScreen(),
-          Container(
-            color: Colors.red,
-          ),
-          Container(
-            color: Colors.yellow,
-          ),
-          Container(
-            color: Colors.green,
-          ),
         ],
       ),
     );
