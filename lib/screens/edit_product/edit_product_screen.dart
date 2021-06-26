@@ -3,11 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:virtual_store/models/product.dart';
 import 'package:virtual_store/screens/edit_product/components/images_form.dart';
+import 'package:virtual_store/screens/edit_product/components/sizes_form.dart';
 
 class EditProductScreen extends StatelessWidget {
-  EditProductScreen(this.product);
+  EditProductScreen(Product p)
+      : editing = p != null,
+        product = p != null ? p.clone() : Product();
 
   final Product product;
+  final bool editing;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -17,7 +21,7 @@ class EditProductScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Anuncio'),
+        title: Text(editing ? 'Editar Anuncio' : 'Criar Anuncio'),
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
@@ -86,19 +90,29 @@ class EditProductScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (formKey.currentState.validate()) {
-                        print('Valido');
-                      } else {
-                        print('Invalido');
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor,
-                        onSurface:
-                            Theme.of(context).primaryColor.withAlpha(100)),
-                    child: const Text('Salvar'),
+                  SizesForm(product),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: 44,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (formKey.currentState.validate()) {
+                          print('Valido');
+                        } else {
+                          print('Invalido');
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).primaryColor,
+                          onSurface:
+                              Theme.of(context).primaryColor.withAlpha(100)),
+                      child: const Text(
+                        'Salvar',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
                   ),
                 ],
               ),
