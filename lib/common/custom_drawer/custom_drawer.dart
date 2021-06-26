@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:virtual_store/common/custom_drawer/custom_drawer_header.dart';
 import 'package:virtual_store/common/custom_drawer/drawer_tile.dart';
+import 'package:virtual_store/models/user_manager.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -12,7 +14,7 @@ class CustomDrawer extends StatelessWidget {
             decoration: BoxDecoration(
                 gradient: LinearGradient(
               colors: [
-                const Color.fromARGB(255, 203, 236, 241),
+                const Color.fromARGB(255, 211, 118, 130),
                 Colors.white,
               ],
               begin: Alignment.topCenter,
@@ -43,6 +45,29 @@ class CustomDrawer extends StatelessWidget {
                 title: 'Lojas',
                 page: 3,
               ),
+              Consumer<UserManager>(
+                builder: (_, userManager, __) {
+                  if (userManager.adminEnable) {
+                    return Column(
+                      children: <Widget>[
+                        const Divider(),
+                        DrawerTile(
+                          iconData: Icons.settings,
+                          title: 'Usuarios',
+                          page: 4,
+                        ),
+                        DrawerTile(
+                          iconData: Icons.settings,
+                          title: 'Pedidos',
+                          page: 5,
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              )
             ],
           ),
         ],
