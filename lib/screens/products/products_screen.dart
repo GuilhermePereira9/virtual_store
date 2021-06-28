@@ -85,6 +85,7 @@ class ProductsScreen extends StatelessWidget {
         ],
       ),
       body: Consumer<ProductManager>(builder: (_, productManager, __) {
+        // ignore: unused_local_variable
         final filteredProducts = productManager.filteredProducts;
         return ListView.builder(
           padding: const EdgeInsets.all(4),
