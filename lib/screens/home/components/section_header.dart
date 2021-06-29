@@ -53,7 +53,7 @@ class SectionHeader extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Text(
-          section.name ?? "PICA",
+          section.name ?? "",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w800,
