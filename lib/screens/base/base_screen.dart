@@ -6,7 +6,12 @@ import 'package:virtual_store/screens/admin_users/admin_users_screen.dart';
 import 'package:virtual_store/screens/home/home_screen.dart';
 import 'package:virtual_store/screens/products/products_screen.dart';
 
-class BaseScreen extends StatelessWidget {
+class BaseScreen extends StatefulWidget {
+  @override
+  _BaseScreenState createState() => _BaseScreenState();
+}
+
+class _BaseScreenState extends State<BaseScreen> {
   final PageController pageController = PageController();
 
   @override

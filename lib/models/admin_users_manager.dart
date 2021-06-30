@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:virtual_store/models/user.dart';
 import 'package:virtual_store/models/user_manager.dart';
 
-class AdminUserManager extends ChangeNotifier {
+class AdminUsersManager extends ChangeNotifier {
   final Firestore firestore = Firestore.instance;
 
   List<User> users = [];

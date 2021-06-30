@@ -13,7 +13,7 @@ class AdminUserScreen extends StatelessWidget {
           title: const Text('Usuarios'),
           centerTitle: true,
         ),
-        body: Consumer<AdminUserManager>(
+        body: Consumer<AdminUsersManager>(
           builder: (_, adminUsersManager, __) {
             return AlphabetListScrollView(
               itemBuilder: (_, index) {

@@ -9,6 +9,7 @@ import 'package:virtual_store/models/user_manager.dart';
 import 'package:virtual_store/screens/address/address_screen.dart';
 import 'package:virtual_store/screens/base/base_screen.dart';
 import 'package:virtual_store/screens/cart/cart_screen.dart';
+import 'package:virtual_store/screens/checkout/checkout_screen.dart';
 import 'package:virtual_store/screens/edit_product/edit_product_screen.dart';
 import 'package:virtual_store/screens/login/login_screen.dart';
 import 'package:virtual_store/screens/product/product_screen.dart';
@@ -45,11 +46,11 @@ class MyApp extends StatelessWidget {
             update: (_, userManager, cartManager) =>
                 cartManager..updateUser(userManager),
           ),
-          ChangeNotifierProxyProvider<UserManager, AdminUserManager>(
-            create: (_) => AdminUserManager(),
+          ChangeNotifierProxyProvider<UserManager, AdminUsersManager>(
+            create: (_) => AdminUsersManager(),
             lazy: false,
-            update: (_, userManager, adminUserManager) =>
-                adminUserManager..updateUser(userManager),
+            update: (_, userManager, adminUsersManager) =>
+                adminUsersManager..updateUser(userManager),
           )
         ],
         child: MaterialApp(
@@ -76,6 +77,8 @@ class MyApp extends StatelessWidget {
                 return MaterialPageRoute(builder: (_) => CartScreen());
               case '/address':
                 return MaterialPageRoute(builder: (_) => AddressScreen());
+              case '/checkout':
+                return MaterialPageRoute(builder: (_) => CheckOutScreen());
               case '/edit_product':
                 return MaterialPageRoute(
                     builder: (_) =>
