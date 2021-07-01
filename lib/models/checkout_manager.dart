@@ -1,10 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:virtual_store/models/cart_manager.dart';
+import 'package:virtual_store/models/order.dart';
 import 'package:virtual_store/models/product.dart';
 
 class CheckOutManager extends ChangeNotifier {
   CartManager cartManager;
+
+  bool _loading = false;
+  bool get loading => _loading;
+  set loading(bool value) {
+    _loading = value;
+    notifyListeners();
+  }
 
   final Firestore firestore = Firestore.instance;
 
@@ -12,13 +20,29 @@ class CheckOutManager extends ChangeNotifier {
     this.cartManager = cartManager;
   }
 
-  Future<void> checkOut() async {
+  Future<void> checkOut({Function onStockFail, Function onSucess}) async {
+    loading = true;
     try {
       _decrementStock();
     } catch (e) {
-      debugPrint(e.toString());
+      onStockFail(e);
+      loading = false;
+      return;
     }
-    _getOrderId().then((value) => print(value));
+
+    //TODO: Procesar pagamento
+
+    final orderId = await _getOrderId();
+
+    final order = Order.fromCartManager(cartManager);
+    order.orderId = orderId.toString();
+
+    await order.save();
+
+    cartManager.clear();
+
+    onSucess(order);
+    loading = false;
   }
 
   Future<int> _getOrderId() async {

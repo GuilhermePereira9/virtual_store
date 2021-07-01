@@ -20,6 +20,7 @@ class CartTile extends StatelessWidget {
               SizedBox(
                 height: 80,
                 width: 80,
+                // ignore: can_be_null_after_null_aware
                 child: Image.network(cartProduct.product?.images.first),
               ),
               Expanded(

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:virtual_store/models/admin_users_manager.dart';
 import 'package:virtual_store/models/cart_manager.dart';
 import 'package:virtual_store/models/home_manager.dart';
+import 'package:virtual_store/models/order.dart';
+import 'package:virtual_store/models/orders_manager.dart';
 import 'package:virtual_store/models/product.dart';
 import 'package:virtual_store/models/product_manager.dart';
 import 'package:virtual_store/models/user_manager.dart';
@@ -10,6 +12,7 @@ import 'package:virtual_store/screens/address/address_screen.dart';
 import 'package:virtual_store/screens/base/base_screen.dart';
 import 'package:virtual_store/screens/cart/cart_screen.dart';
 import 'package:virtual_store/screens/checkout/checkout_screen.dart';
+import 'package:virtual_store/screens/confirmation/confirmation_screen.dart';
 import 'package:virtual_store/screens/edit_product/edit_product_screen.dart';
 import 'package:virtual_store/screens/login/login_screen.dart';
 import 'package:virtual_store/screens/product/product_screen.dart';
@@ -46,6 +49,12 @@ class MyApp extends StatelessWidget {
             update: (_, userManager, cartManager) =>
                 cartManager..updateUser(userManager),
           ),
+          ChangeNotifierProxyProvider<UserManager, OrdersManager>(
+            create: (_) => OrdersManager(),
+            lazy: false,
+            update: (_, userManager, ordersManager) =>
+                ordersManager..updateUser(userManager.user),
+          ),
           ChangeNotifierProxyProvider<UserManager, AdminUsersManager>(
             create: (_) => AdminUsersManager(),
             lazy: false,
@@ -74,7 +83,8 @@ class MyApp extends StatelessWidget {
                     builder: (_) =>
                         ProductScreen(settings.arguments as Product));
               case '/cart':
-                return MaterialPageRoute(builder: (_) => CartScreen());
+                return MaterialPageRoute(
+                    builder: (_) => CartScreen(), settings: settings);
               case '/address':
                 return MaterialPageRoute(builder: (_) => AddressScreen());
               case '/checkout':
@@ -85,9 +95,14 @@ class MyApp extends StatelessWidget {
                         EditProductScreen(settings.arguments as Product));
               case '/select_product':
                 return MaterialPageRoute(builder: (_) => SelectProductScreen());
+              case '/confirmation':
+                return MaterialPageRoute(
+                    builder: (_) =>
+                        ConfirmationScreen(settings.arguments as Order));
               case '/base':
               default:
-                return MaterialPageRoute(builder: (_) => BaseScreen());
+                return MaterialPageRoute(
+                    builder: (_) => BaseScreen(), settings: settings);
             }
           },
         ),
