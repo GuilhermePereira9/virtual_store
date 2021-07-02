@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:virtual_store/models/order.dart';
+import 'package:virtual_store/screens/orders/components/cancel_order_dialog.dart';
+import 'package:virtual_store/screens/orders/components/exports_address_dialog.dart';
 import 'package:virtual_store/screens/orders/components/order_product_tile.dart';
 
 class OrderTile extends StatelessWidget {
-  const OrderTile(this.order);
+  const OrderTile(this.order, {this.showControls = false});
 
   final Order order;
-
+  final bool showControls;
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
@@ -35,10 +37,12 @@ class OrderTile extends StatelessWidget {
               ],
             ),
             Text(
-              'Em transporte',
+              order.statusText,
               style: TextStyle(
                   fontWeight: FontWeight.w400,
-                  color: primaryColor,
+                  color: order.status == Status.canceled
+                      ? Colors.red
+                      : primaryColor,
                   fontSize: 14),
             )
           ],
@@ -48,7 +52,49 @@ class OrderTile extends StatelessWidget {
             children: order.items.map((e) {
               return OrderProductTile(e);
             }).toList(),
-          )
+          ),
+          if (showControls && order.status != Status.canceled)
+            SizedBox(
+              height: 50,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.cancel),
+                      color: primaryColor,
+                      iconSize: 30,
+                      padding: const EdgeInsets.only(right: 20, left: 20),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) => CancelOrderDialog(order));
+                      }),
+                  IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: primaryColor,
+                    iconSize: 30,
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    onPressed: order.back,
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.arrow_forward),
+                      color: primaryColor,
+                      iconSize: 30,
+                      padding: const EdgeInsets.only(right: 50, left: 20),
+                      onPressed: order.advance),
+                  IconButton(
+                      icon: Icon(Icons.home),
+                      color: primaryColor,
+                      iconSize: 30,
+                      padding: const EdgeInsets.only(right: 50, left: 20),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) => ExportAddressDialog(order.address));
+                      }),
+                ],
+              ),
+            )
         ],
       ),
     );
