@@ -15,7 +15,7 @@ class ProductsScreen extends StatelessWidget {
         title: Consumer<ProductManager>(
           builder: (_, productManager, __) {
             if (productManager.search.isEmpty) {
-              return const Text('Serviços');
+              return const Text('Produtos');
             } else {
               return LayoutBuilder(
                 builder: (_, constrains) {
