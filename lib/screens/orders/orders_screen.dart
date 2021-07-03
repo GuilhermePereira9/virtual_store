@@ -12,7 +12,7 @@ class OrdersScreen extends StatelessWidget {
     return Scaffold(
       drawer: CustomDrawer(),
       appBar: AppBar(
-        title: const Text('Meus Pedidos'),
+        title: const Text('Meus Serviços'),
         centerTitle: true,
       ),
       body: Consumer<OrdersManager>(
@@ -22,7 +22,7 @@ class OrdersScreen extends StatelessWidget {
           }
           if (ordersManager.orders.isEmpty) {
             return EmptyCard(
-              title: 'Nenhuma Compra Encontrada!',
+              title: 'Nenhum Serviço Encontrado!',
               iconData: Icons.border_clear,
             );
           }

@@ -70,11 +70,11 @@ class MyApp extends StatelessWidget {
           )
         ],
         child: MaterialApp(
-          title: 'Violent Store',
+          title: 'High Torque',
           theme: ThemeData(
             //primaryColor: const Color.fromARGB(255, 4, 125, 141),
-            primaryColor: const Color.fromARGB(255, 211, 118, 130),
-            scaffoldBackgroundColor: const Color.fromARGB(255, 211, 118, 130),
+            primaryColor: const Color.fromARGB(255, 255, 102, 102),
+            scaffoldBackgroundColor: const Color.fromARGB(255, 47, 45, 45),
             appBarTheme: const AppBarTheme(elevation: 0),
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),

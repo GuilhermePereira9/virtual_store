@@ -18,8 +18,8 @@ class HomeScreen extends StatelessWidget {
             decoration: BoxDecoration(
                 gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 211, 118, 130),
-                Color.fromARGB(255, 253, 181, 168)
+                Color.fromARGB(255, 47, 45, 45),
+                Color.fromARGB(255, 47, 45, 45)
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -33,7 +33,10 @@ class HomeScreen extends StatelessWidget {
                 elevation: 0,
                 backgroundColor: Colors.transparent,
                 flexibleSpace: const FlexibleSpaceBar(
-                  title: Text('Violent Store'),
+                  title: Text(
+                    'High Torque',
+                    style: TextStyle(color: Colors.red),
+                  ),
                   centerTitle: true,
                 ),
                 actions: <Widget>[
