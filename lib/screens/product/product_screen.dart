@@ -24,7 +24,7 @@ class ProductScreen extends StatelessWidget {
           actions: <Widget>[
             Consumer<UserManager>(
               builder: (_, userManager, __) {
-                if (userManager.adminEnable) {
+                if (userManager.adminEnable && !product.deleted) {
                   return IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
@@ -65,16 +65,29 @@ class ProductScreen extends StatelessWidget {
                     product.name,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      'A partir de',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey[600],
+                  if (product.hasStock)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        'A partir de',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    )
+                  else ...{
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, bottom: 8),
+                      child: Text(
+                        'Indisponivel',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red),
                       ),
                     ),
-                  ),
+                  },
                   Text(
                     'R\$ ${product.basePrice.toStringAsFixed(2)}',
                     style: TextStyle(
@@ -97,23 +110,36 @@ class ProductScreen extends StatelessWidget {
                     product.description,
                     style: const TextStyle(fontSize: 16),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Text(
-                      'Tamanhos',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                  if (product.deleted)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, bottom: 8),
+                      child: Text(
+                        'Indisponivel',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red),
+                      ),
+                    )
+                  else ...{
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: Text(
+                        'Tamanhos',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 10,
-                    children: product.sizes.map((s) {
-                      return SizeWidget(size: s);
-                    }).toList(),
-                  ),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 10,
+                      children: product.sizes.map((s) {
+                        return SizeWidget(size: s);
+                      }).toList(),
+                    ),
+                  },
                   const SizedBox(
                     height: 20,
                   ),

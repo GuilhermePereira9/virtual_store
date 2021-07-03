@@ -21,7 +21,7 @@ class ItemTile extends StatelessWidget {
       onTap: () {
         if (item.product != null) {
           final product =
-              context.read<ProductManager>().findProductByID(item.product);
+              context.read<ProductManager>().findProductById(item.product);
           if (product != null) {
             Navigator.of(context).pushNamed('/product', arguments: product);
           }
@@ -34,7 +34,7 @@ class ItemTile extends StatelessWidget {
                   builder: (_) {
                     final product = context
                         .read<ProductManager>()
-                        .findProductByID(item.product);
+                        .findProductById(item.product);
                     return AlertDialog(
                       title: const Text('Editar Item'),
                       content: product != null

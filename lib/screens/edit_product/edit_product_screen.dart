@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:virtual_store/models/product.dart';
 import 'package:virtual_store/models/product_manager.dart';
 import 'package:virtual_store/screens/edit_product/components/images_form.dart';
+import 'package:virtual_store/screens/edit_product/components/item_delete_dialog.dart';
 import 'package:virtual_store/screens/edit_product/components/sizes_form.dart';
 
 class EditProductScreen extends StatelessWidget {
@@ -25,6 +26,17 @@ class EditProductScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(editing ? 'Editar Anuncio' : 'Criar Anuncio'),
           centerTitle: true,
+          actions: <Widget>[
+            if (editing)
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) => ItemDeleteDialog(product));
+                },
+              )
+          ],
         ),
         backgroundColor: Colors.white,
         body: Form(
