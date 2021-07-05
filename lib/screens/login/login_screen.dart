@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:virtual_store/helpers/validators.dart';
 import 'package:provider/provider.dart';
 import 'package:virtual_store/models/user.dart';
@@ -35,6 +37,16 @@ class LoginScreen extends StatelessWidget {
               key: formKey,
               child: Consumer<UserManager>(
                 builder: (_, userManager, __) {
+                  if (userManager.loadingFace) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 10,
+                        valueColor: AlwaysStoppedAnimation(
+                            Theme.of(context).primaryColor),
+                      ),
+                    );
+                  }
                   return ListView(
                     padding: const EdgeInsets.all(16),
                     shrinkWrap: true,
@@ -76,46 +88,52 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(
                         height: 16,
                       ),
-                      SizedBox(
-                        height: 44,
-                        child: ElevatedButton(
-                          onPressed: userManager.loading
-                              ? null
-                              : () {
-                                  if (formKey.currentState.validate()) {
-                                    userManager.singIn(
-                                        user: User(
-                                            email: emailController.text,
-                                            password: passController.text),
-                                        onFail: (e) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                            content:
-                                                Text('Falha ao entrar: $e'),
-                                            backgroundColor: Colors.red,
-                                          ));
-                                        },
-                                        onSucess: () {
-                                          Navigator.of(context).pop();
-                                        });
-                                  }
-                                },
-                          style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
-                              onSurface: Theme.of(context)
-                                  .primaryColor
-                                  .withAlpha(100)),
-                          child: userManager.loading
-                              ? CircularProgressIndicator(
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.white),
-                                )
-                              : const Text(
-                                  "Entrar",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                        ),
+                      ElevatedButton(
+                        onPressed: userManager.loading
+                            ? null
+                            : () {
+                                if (formKey.currentState.validate()) {
+                                  userManager.singIn(
+                                      user: User(
+                                          email: emailController.text,
+                                          password: passController.text),
+                                      onFail: (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text('Falha ao entrar: $e'),
+                                          backgroundColor: Colors.red,
+                                        ));
+                                      },
+                                      onSucess: () {
+                                        Navigator.of(context).pop();
+                                      });
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor,
+                            onSurface:
+                                Theme.of(context).primaryColor.withAlpha(100)),
+                        child: userManager.loading
+                            ? CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation(Colors.white),
+                              )
+                            : const Text(
+                                "Entrar",
+                                style: TextStyle(fontSize: 16),
+                              ),
                       ),
+                      SignInButton(Buttons.Facebook,
+                          text: 'Entrar com Facebook', onPressed: () {
+                        userManager.facebookLogin(onFail: (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Falha ao entrar: $e'),
+                            backgroundColor: Colors.red,
+                          ));
+                        }, onSucess: () {
+                          Navigator.of(context).pop();
+                        });
+                      })
                     ],
                   );
                 },
