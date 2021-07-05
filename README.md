@@ -1,6 +1,6 @@
 Virtual Store
 
-An E-Commerce created with Flutter.
+An E-Commerce app created with Flutter.
 I'm using Firebase as DB
 
 Still an work in progress. 
