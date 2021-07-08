@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:virtual_store/models/credit_card.dart';
 import 'package:virtual_store/screens/checkout/components/card_text_field.dart';
 
 class CardBack extends StatelessWidget {
-  const CardBack({this.cvvFocus});
+  const CardBack({this.cvvFocus, this.creditCard});
 
   final FocusNode cvvFocus;
+  final CreditCard creditCard;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class CardBack extends StatelessWidget {
                         return null;
                       },
                       focusNode: cvvFocus,
+                      onSaved: creditCard.setCVV,
                     ),
                   ),
                 ),

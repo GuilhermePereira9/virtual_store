@@ -3,11 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:virtual_store/common/price_card.dart';
 import 'package:virtual_store/models/cart_manager.dart';
 import 'package:virtual_store/models/checkout_manager.dart';
+import 'package:virtual_store/models/credit_card.dart';
+import 'package:virtual_store/screens/checkout/components/cpf_field.dart';
 import 'package:virtual_store/screens/checkout/components/credit_card_widget.dart';
 
 class CheckOutScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final CreditCard creditCard = CreditCard();
 
   @override
   Widget build(BuildContext context) {
@@ -55,20 +58,27 @@ class CheckOutScreen extends StatelessWidget {
                   key: formKey,
                   child: ListView(
                     children: <Widget>[
-                      CreditCardWidget(),
+                      CreditCardWidget(creditCard),
+                      CpfField(),
                       PriceCard(
                         buttonText: 'Finalizar Pedido',
                         onPressed: () {
                           if (formKey.currentState.validate()) {
-                            checkOutManager.checkOut(onStockFail: (e) {
-                              Navigator.of(context).popUntil(
-                                  (route) => route.settings.name == '/cart');
-                            }, onSucess: (order) {
-                              Navigator.of(context).popUntil(
-                                  (route) => route.settings.name == '/');
-                              Navigator.of(context)
-                                  .pushNamed('/confirmation', arguments: order);
-                            });
+                            formKey.currentState.save();
+
+                            checkOutManager.checkOut(
+                                creditCard: creditCard,
+                                onStockFail: (e) {
+                                  Navigator.of(context).popUntil((route) =>
+                                      route.settings.name == '/cart');
+                                },
+                                onSucess: (order) {
+                                  Navigator.of(context).popUntil(
+                                      (route) => route.settings.name == '/');
+                                  Navigator.of(context).pushNamed(
+                                      '/confirmation',
+                                      arguments: order);
+                                });
                           }
                         },
                       )

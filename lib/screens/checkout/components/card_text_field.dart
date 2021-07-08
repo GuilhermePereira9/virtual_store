@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CardTextField extends StatelessWidget {
-  const CardTextField({
-    this.title,
-    this.bold = false,
-    this.hint,
-    this.textInputType,
-    this.inputFormattters,
-    this.validator,
-    this.maxLength,
-    this.textAlign = TextAlign.start,
-    this.focusNode,
-    this.onSubmitted,
-  }) : textInputAction =
+  const CardTextField(
+      {this.title,
+      this.bold = false,
+      this.hint,
+      this.textInputType,
+      this.inputFormattters,
+      this.validator,
+      this.maxLength,
+      this.textAlign = TextAlign.start,
+      this.focusNode,
+      this.onSubmitted,
+      this.onSaved})
+      : textInputAction =
             onSubmitted == null ? TextInputAction.done : TextInputAction.next;
 
   final String title;
@@ -27,11 +28,13 @@ class CardTextField extends StatelessWidget {
   final FocusNode focusNode;
   final Function(String) onSubmitted;
   final TextInputAction textInputAction;
+  final FormFieldSetter<String> onSaved;
 
   @override
   Widget build(BuildContext context) {
     return FormField<String>(
         initialValue: '',
+        onSaved: onSaved,
         validator: validator,
         builder: (state) {
           return Padding(
