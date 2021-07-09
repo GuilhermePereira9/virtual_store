@@ -65,12 +65,18 @@ class CheckOutScreen extends StatelessWidget {
                         onPressed: () {
                           if (formKey.currentState.validate()) {
                             formKey.currentState.save();
-
                             checkOutManager.checkOut(
                                 creditCard: creditCard,
                                 onStockFail: (e) {
                                   Navigator.of(context).popUntil((route) =>
                                       route.settings.name == '/cart');
+                                },
+                                onPayFail: (e) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text('$e'),
+                                    backgroundColor: Colors.red,
+                                  ));
                                 },
                                 onSucess: (order) {
                                   Navigator.of(context).popUntil(

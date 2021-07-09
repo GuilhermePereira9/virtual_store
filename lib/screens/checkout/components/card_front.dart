@@ -8,7 +8,7 @@ import 'package:virtual_store/screens/checkout/components/card_text_field.dart';
 
 class CardFront extends StatelessWidget {
   final dateFormatter = MaskTextInputFormatter(
-      mask: '!#/##', filter: {'#': RegExp('[0-9]'), '!': RegExp('[0-1]')});
+      mask: '!#/####', filter: {'#': RegExp('[0-9]'), '!': RegExp('[0-1]')});
 
   CardFront(
       {this.numberFocus,
@@ -42,6 +42,7 @@ class CardFront extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   CardTextField(
+                    initialValue: creditCard.number,
                     title: 'Numero',
                     hint: '0000 0000 0000 0000',
                     textInputType: TextInputType.number,
@@ -64,14 +65,15 @@ class CardFront extends StatelessWidget {
                     onSaved: creditCard.setNumber,
                   ),
                   CardTextField(
+                    initialValue: creditCard.expirationDate,
                     title: 'Validade',
-                    hint: '07/25',
+                    hint: '07/2025',
                     textInputType: TextInputType.number,
                     inputFormattters: [
                       dateFormatter,
                     ],
                     validator: (date) {
-                      if (date.length != 5) return 'Insira uma data Valida';
+                      if (date.length != 7) return 'Insira uma data Valida';
                       return null;
                     },
                     onSubmitted: (_) {
@@ -81,6 +83,7 @@ class CardFront extends StatelessWidget {
                     onSaved: creditCard.setExpirationDate,
                   ),
                   CardTextField(
+                    initialValue: creditCard.holder,
                     title: 'Titular',
                     hint: 'Jonh Dear',
                     textInputType: TextInputType.text,

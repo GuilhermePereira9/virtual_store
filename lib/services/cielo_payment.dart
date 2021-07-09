@@ -1,25 +1,39 @@
+import 'dart:collection';
+
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:virtual_store/models/credit_card.dart';
 import 'package:virtual_store/models/user.dart';
 
 class CieloPayment {
   final CloudFunctions functions = CloudFunctions.instance;
 
-  Future<void> authorize(
+  Future<String> authorize(
       {CreditCard creditCard, num price, String orderId, User user}) async {
-    final Map<String, dynamic> dataSale = {
-      'mercantOrderId': orderId,
-      'amount': (price * 100).toInt(),
-      'softDescriptor': 'Violent Store',
-      'installments': 12,
-      'creditCard': creditCard.toJson(),
-      'cpf': user.cpf,
-      'paymentType': 'creditCard',
-    };
+    try {
+      final Map<String, dynamic> dataSale = {
+        'merchantOrderId': orderId,
+        'amount': (price * 100).toInt(),
+        'softDescriptor': 'Violent Book',
+        'installments': 1,
+        'creditCard': creditCard.toJson(),
+        'cpf': user.cpf,
+        'paymentType': 'CreditCard',
+      };
 
-    final HttpsCallable callable = CloudFunctions.instance
-        .getHttpsCallable(functionName: 'authorizeCreditCard');
-    final response = await callable.call(dataSale);
-    print(response.data);
+      final HttpsCallable callable =
+          functions.getHttpsCallable(functionName: 'authorizeCreditCard');
+      final response = await callable.call(dataSale);
+      final data = Map<String, dynamic>.from(response.data as LinkedHashMap);
+      if (data['success'] as bool) {
+        return data['paymentId'] as String;
+      } else {
+        debugPrint('${data['error']['message']}');
+        return Future.error(data['error']['message']);
+      }
+    } catch (e) {
+      debugPrint('$e');
+      return Future.error('Falha ao processar transação. Tente Novamente.');
+    }
   }
 }
