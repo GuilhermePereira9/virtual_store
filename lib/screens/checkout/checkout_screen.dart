@@ -78,7 +78,7 @@ class CheckOutScreen extends StatelessWidget {
                                     backgroundColor: Colors.red,
                                   ));
                                 },
-                                onSucess: (order) {
+                                onSuccess: (order) {
                                   Navigator.of(context).popUntil(
                                       (route) => route.settings.name == '/');
                                   Navigator.of(context).pushNamed(

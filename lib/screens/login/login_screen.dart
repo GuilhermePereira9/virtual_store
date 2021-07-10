@@ -104,7 +104,7 @@ class LoginScreen extends StatelessWidget {
                                           backgroundColor: Colors.red,
                                         ));
                                       },
-                                      onSucess: () {
+                                      onSuccess: () {
                                         Navigator.of(context).pop();
                                       });
                                 }
@@ -130,7 +130,7 @@ class LoginScreen extends StatelessWidget {
                             content: Text('Falha ao entrar: $e'),
                             backgroundColor: Colors.red,
                           ));
-                        }, onSucess: () {
+                        }, onSuccess: () {
                           Navigator.of(context).pop();
                         });
                       })

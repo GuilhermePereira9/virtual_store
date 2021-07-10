@@ -1,14 +1,12 @@
 import * as functions from "firebase-functions";
 import * as admin from 'firebase-admin';
 
-import { CieloConstructor, Cielo, TransactionCreditCardRequestModel, EnumBrands} from 'cielo';
+import { CieloConstructor, Cielo, TransactionCreditCardRequestModel, EnumBrands, CaptureRequestModel, CancelTransactionRequestModel} from 'cielo';
 
 admin.initializeApp(functions.config().firebase);
 
-//CaptureRequestModel, CancelTransactionRequestModel, fazer
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
-//
 
 const merchantId = functions.config().cielo.merchantid;
 const merchantKey = functions.config().cielo.merchantkey;
@@ -25,7 +23,7 @@ const cielo = new Cielo(cieloParams);
 export const authorizeCreditCard = functions.https.onCall(async (data, context) => {
     if(data === null){
         return {
-        "sucess": false,
+        "success": false,
         "error": {
             "code": -1,
             "message": "Dados não informados"
@@ -34,7 +32,7 @@ export const authorizeCreditCard = functions.https.onCall(async (data, context) 
     }
     if(!context.auth){
         return {
-            "sucess": false,
+            "success": false,
             "error": {
                 "code": -1,
                 "message": "Nenhum usuario Logado"
@@ -76,7 +74,7 @@ export const authorizeCreditCard = functions.https.onCall(async (data, context) 
             break;
         default:
             return {
-                "sucess": false,
+                "success": false,
                 "error": {
                     "code": -1,
                     "message": "Cartão não suportado: " + data.creditCard.brand
@@ -163,6 +161,106 @@ export const authorizeCreditCard = functions.https.onCall(async (data, context) 
                 }
             }
         }
+    } catch (error){
+        console.log("Error ", error);
+        return {
+            "success": false,
+            "error": {
+                "code": error.response[0].Code,
+                "message": error.response[0].Message
+            }
+        };
+    }
+
+});
+
+export const captureCreditCard = functions.https.onCall(async (data, context) => {
+    if(data === null){
+        return {
+        "success": false,
+        "error": {
+            "code": -1,
+            "message": "Dados não informados"
+        }
+    };
+    }
+    if(!context.auth){
+        return {
+            "success": false,
+            "error": {
+                "code": -1,
+                "message": "Nenhum usuario Logado"
+            }
+        };
+    }
+    const captureParams: CaptureRequestModel = {
+        paymentId: data.payId,
+    }
+
+    try{
+        const capture = await cielo.creditCard.captureSaleTransaction(captureParams);
+    if(capture.status === 2){
+        return {"success": true};
+    } else{
+        return {
+            "success": false,
+            "status": capture.status,
+            "error": {
+                "code": capture.returnCode,
+                "message": capture.returnMessage,
+            }
+        };
+    }
+    } catch (error){
+        console.log("Error ", error);
+        return {
+            "success": false,
+            "error": {
+                "code": error.response[0].Code,
+                "message": error.response[0].Message
+            }
+        };
+    }
+
+});
+
+export const cancelCreditCard = functions.https.onCall(async (data, context) => {
+    if(data === null){
+        return {
+        "success": false,
+        "error": {
+            "code": -1,
+            "message": "Dados não informados"
+        }
+    };
+    }
+    if(!context.auth){
+        return {
+            "success": false,
+            "error": {
+                "code": -1,
+                "message": "Nenhum usuario Logado"
+            }
+        };
+    }
+    const cancelParams: CancelTransactionRequestModel = {
+        paymentId: data.payId,
+    }
+
+    try{
+        const cancel = await cielo.creditCard.cancelTransaction(cancelParams);
+    if(cancel.status === 10 || cancel.status === 11){
+        return {"success": true};
+    } else{
+        return {
+            "success": false,
+            "status": cancel.status,
+            "error": {
+                "code": cancel.returnCode,
+                "message": cancel.returnMessage,
+            }
+        };
+    }
     } catch (error){
         console.log("Error ", error);
         return {

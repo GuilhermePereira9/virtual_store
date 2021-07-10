@@ -121,7 +121,7 @@ class ProductScreen extends StatelessWidget {
                             color: Colors.red),
                       ),
                     )
-                  else ...{
+                  else if (product.sizes.length > 1) ...{
                     Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: Text(
@@ -149,9 +149,19 @@ class ProductScreen extends StatelessWidget {
                         return SizedBox(
                           height: 44,
                           child: ElevatedButton(
-                            onPressed: product.selectedSize != null
+                            onPressed: product.selectedSize != null ||
+                                    product.sizes.length < 2
                                 ? () {
-                                    if (userManager.isLoggedIn) {
+                                    if (userManager.isLoggedIn &&
+                                        product.sizes.length > 1) {
+                                      context
+                                          .read<CartManager>()
+                                          .addToCart(product);
+                                      Navigator.of(context).pushNamed('/cart');
+                                    } else if (userManager.isLoggedIn &&
+                                        product.sizes.length == 1) {
+                                      product.selectedSize =
+                                          product.sizes.first;
                                       context
                                           .read<CartManager>()
                                           .addToCart(product);

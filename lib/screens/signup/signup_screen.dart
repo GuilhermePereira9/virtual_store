@@ -112,7 +112,7 @@ class SingUpScreen extends StatelessWidget {
 
                                   userManager.signUp(
                                       user: user,
-                                      onSucess: () {
+                                      onSuccess: () {
                                         Navigator.of(context).pop();
                                       },
                                       onFail: (e) {

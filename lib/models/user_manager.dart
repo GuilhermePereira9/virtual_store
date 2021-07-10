@@ -31,7 +31,7 @@ class UserManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> singIn({User user, Function onFail, Function onSucess}) async {
+  Future<void> singIn({User user, Function onFail, Function onSuccess}) async {
     loading = true;
     try {
       final AuthResult result = await auth.signInWithEmailAndPassword(
@@ -39,14 +39,14 @@ class UserManager extends ChangeNotifier {
 
       await _loadCurrentUser(firebaseUser: result.user);
 
-      onSucess();
+      onSuccess();
     } on PlatformException catch (e) {
       onFail(getErrorString(e.code));
     }
     loading = false;
   }
 
-  Future<void> signUp({User user, Function onFail, Function onSucess}) async {
+  Future<void> signUp({User user, Function onFail, Function onSuccess}) async {
     loading = true;
     try {
       final AuthResult result = await auth.createUserWithEmailAndPassword(
@@ -57,14 +57,14 @@ class UserManager extends ChangeNotifier {
 
       await user.saveData();
 
-      onSucess();
+      onSuccess();
     } on PlatformException catch (e) {
       onFail(getErrorString(e.code));
     }
     loading = false;
   }
 
-  Future<void> facebookLogin({Function onFail, Function onSucess}) async {
+  Future<void> facebookLogin({Function onFail, Function onSuccess}) async {
     loadingFace = true;
     final result = await FacebookLogin().logIn(['email', 'public_profile']);
 
@@ -83,7 +83,7 @@ class UserManager extends ChangeNotifier {
 
           await user.saveData();
 
-          onSucess();
+          onSuccess();
         }
         break;
       case FacebookLoginStatus.cancelledByUser:

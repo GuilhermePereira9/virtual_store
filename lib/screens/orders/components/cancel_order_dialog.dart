@@ -1,27 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:virtual_store/models/order.dart';
 
-class CancelOrderDialog extends StatelessWidget {
+class CancelOrderDialog extends StatefulWidget {
   const CancelOrderDialog(this.order);
 
   final Order order;
 
   @override
+  _CancelOrderDialogState createState() => _CancelOrderDialogState();
+}
+
+class _CancelOrderDialogState extends State<CancelOrderDialog> {
+  bool loading = false;
+  String error;
+  @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Cancelar ${order.formattedId}?'),
-      content: const Text('Esta ação não poderá ser defeita!'),
-      actions: <Widget>[
-        TextButton(
-            child: const Text('Cancelar Pedido'),
-            onPressed: () {
-              order.cancel();
-              Navigator.of(context).pop();
-            },
-            style: TextButton.styleFrom(
-              primary: Colors.red,
-            )),
-      ],
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: AlertDialog(
+        title: Text('Cancelar ${widget.order.formattedId}?'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(loading
+                ? 'Efetuando Cancelamento...'
+                : 'Esta ação não poderá ser defeita!'),
+            if (error != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  error,
+                  style: TextStyle(color: Colors.red),
+                ),
+              )
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+              child: const Text('Voltar'),
+              onPressed: !loading
+                  ? () {
+                      Navigator.of(context).pop();
+                    }
+                  : null,
+              style: TextButton.styleFrom(
+                primary: Colors.blue,
+              )),
+          TextButton(
+              child: const Text('Cancelar Pedido'),
+              onPressed: !loading
+                  ? () async {
+                      setState(() {
+                        loading = true;
+                      });
+                      try {
+                        await widget.order.cancel();
+                        Navigator.of(context).pop();
+                      } catch (e) {
+                        setState(() {
+                          loading = false;
+                          error = e.toString();
+                        });
+                      }
+                    }
+                  : null,
+              style: TextButton.styleFrom(
+                primary: Colors.red,
+              )),
+        ],
+      ),
     );
   }
 }

@@ -27,41 +27,54 @@ class CheckOutManager extends ChangeNotifier {
   Future<void> checkOut(
       {CreditCard creditCard,
       Function onStockFail,
-      Function onSucess,
+      Function onSuccess,
       Function onPayFail}) async {
     loading = true;
 
     final orderId = await _getOrderId();
+    String payId;
 
     try {
-      String payId = await cieloPayment.authorize(
+      payId = await cieloPayment.authorize(
         creditCard: creditCard,
         price: cartManager.totalPrice,
         orderId: orderId.toString(),
         user: cartManager.user,
       );
+      debugPrint('success $payId');
     } catch (e) {
       onPayFail(e);
       loading = false;
       return;
     }
 
-    // try {
-    //   _decrementStock();
-    // } catch (e) {
-    //   onStockFail(e);
-    //   loading = false;
-    //   return;
-    // }
+    try {
+      await _decrementStock();
+    } catch (e) {
+      cieloPayment.cancel(payId);
+      onStockFail(e);
+      loading = false;
+      return;
+    }
 
-    //   final order = Order.fromCartManager(cartManager);
-    //   order.orderId = orderId.toString();
+    try {
+      await cieloPayment.capture(payId);
+      print('success');
+    } catch (e) {
+      onPayFail(e);
+      loading = false;
+      return;
+    }
 
-    //   await order.save();
+    final order = Order.fromCartManager(cartManager);
+    order.orderId = orderId.toString();
+    order.payId = payId;
 
-    //   cartManager.clear();
+    await order.save();
 
-    //   onSucess(order);
+    cartManager.clear();
+
+    onSuccess(order);
     loading = false;
   }
 
