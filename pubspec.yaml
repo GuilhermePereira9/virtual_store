@@ -59,7 +59,7 @@ dependencies:
   cpf_cnpj_validator: ^2.0.0
   firebase_messaging: ^6.0.16
   flushbar: ^1.10.4
-  
+  flutter_slidable: ^0.6.0
  
 dev_dependencies:
   flutter_test:

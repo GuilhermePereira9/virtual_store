@@ -4,6 +4,7 @@ import 'package:virtual_store/common/price_card.dart';
 import 'package:virtual_store/models/cart_manager.dart';
 import 'package:virtual_store/models/checkout_manager.dart';
 import 'package:virtual_store/models/credit_card.dart';
+import 'package:virtual_store/models/installments_widget.dart';
 import 'package:virtual_store/screens/checkout/components/cpf_field.dart';
 import 'package:virtual_store/screens/checkout/components/credit_card_widget.dart';
 
@@ -59,6 +60,7 @@ class CheckOutScreen extends StatelessWidget {
                   child: ListView(
                     children: <Widget>[
                       CreditCardWidget(creditCard),
+                      InstallmentsWidget(),
                       CpfField(),
                       PriceCard(
                         buttonText: 'Finalizar Pedido',

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:virtual_store/models/product.dart';
+import 'package:virtual_store/models/product_manager.dart';
+import 'package:provider/provider.dart';
 
 class ItemDeleteDialog extends StatelessWidget {
   const ItemDeleteDialog(this.product);
@@ -13,9 +15,9 @@ class ItemDeleteDialog extends StatelessWidget {
       content: const Text('Esta ação não poderá ser defeita!'),
       actions: <Widget>[
         TextButton(
-            child: const Text('Excluir Pedido'),
+            child: const Text('Excluir Produto'),
             onPressed: () {
-              product.delete();
+              context.read<ProductManager>().delete(product);
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },

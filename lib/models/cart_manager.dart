@@ -18,6 +18,9 @@ class CartManager extends ChangeNotifier {
   num deliveryPrice;
   num get totalPrice => productsPrice + (deliveryPrice ?? 0);
 
+  int _installments = 1;
+  int get installments => _installments;
+
   bool _loading = false;
   bool get loading => _loading;
   set loading(bool value) {
@@ -118,6 +121,11 @@ class CartManager extends ChangeNotifier {
   }
 
   bool get isAddressValid => address != null && deliveryPrice != null;
+
+  set installments(int value) {
+    _installments = value;
+    notifyListeners();
+  }
 
   ////////////////////////ADDRESS/////////////////////////////////////////////
 

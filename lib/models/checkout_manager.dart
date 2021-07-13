@@ -40,6 +40,7 @@ class CheckOutManager extends ChangeNotifier {
         price: cartManager.totalPrice,
         orderId: orderId.toString(),
         user: cartManager.user,
+        installments: cartManager.installments,
       );
       debugPrint('success $payId');
     } catch (e) {

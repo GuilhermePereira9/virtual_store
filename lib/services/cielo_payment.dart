@@ -9,13 +9,17 @@ class CieloPayment {
   final CloudFunctions functions = CloudFunctions.instance;
 
   Future<String> authorize(
-      {CreditCard creditCard, num price, String orderId, User user}) async {
+      {CreditCard creditCard,
+      num price,
+      String orderId,
+      User user,
+      int installments}) async {
     try {
       final Map<String, dynamic> dataSale = {
         'merchantOrderId': orderId,
         'amount': (price * 100).toInt(),
         'softDescriptor': 'Violent Book',
-        'installments': 1,
+        'installments': installments,
         'creditCard': creditCard.toJson(),
         'cpf': user.cpf,
         'paymentType': 'CreditCard',

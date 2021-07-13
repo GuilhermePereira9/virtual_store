@@ -44,7 +44,7 @@ class CartTile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: Text(
-                          'Tamanho: ${cartProduct.size}',
+                          'Tipo: ${cartProduct.size}',
                           style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ),

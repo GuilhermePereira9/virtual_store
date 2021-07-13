@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
           )
         ],
         child: MaterialApp(
-          title: 'Violent Store',
+          title: 'Violent Book Store',
           theme: ThemeData(
             primaryColor: const Color.fromARGB(255, 211, 118, 130),
             scaffoldBackgroundColor: const Color.fromARGB(255, 211, 118, 130),
