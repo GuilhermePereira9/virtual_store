@@ -35,7 +35,7 @@ class SectionList extends StatelessWidget {
                           return AddTileWidget();
                       },
                       separatorBuilder: (_, __) => const SizedBox(
-                        width: 4,
+                        width: 8,
                       ),
                       itemCount: homeManager.editing
                           ? section.items.length + 1

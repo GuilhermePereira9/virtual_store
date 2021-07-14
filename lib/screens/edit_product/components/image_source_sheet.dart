@@ -13,7 +13,7 @@ class ImageSourceSheet extends StatelessWidget {
   Future<void> editImage(String path, BuildContext context) async {
     final File croppedFile = await ImageCropper.cropImage(
         sourcePath: path,
-        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+        //aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
         androidUiSettings: AndroidUiSettings(
           toolbarTitle: 'Editar Imagem',
           toolbarColor: Theme.of(context).primaryColor,

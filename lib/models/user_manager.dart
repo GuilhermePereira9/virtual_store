@@ -122,4 +122,9 @@ class UserManager extends ChangeNotifier {
   }
 
   bool get adminEnable => user != null && user.admin;
+
+  void recoverPass(String email) {
+    auth.sendPasswordResetEmail(email: email);
+    notifyListeners();
+  }
 }
